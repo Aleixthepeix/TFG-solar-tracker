@@ -1,4 +1,4 @@
-# TFG — Seguidor Solar con Plataforma Stewart
+# TFG — Seguidor Solar
 
 Sistema de seguimiento solar de dos ejes basado en visión artificial. Detecta el centroide del sol en tiempo real y orienta un panel mediante dos actuadores lineales controlados con cinemática inversa.
 

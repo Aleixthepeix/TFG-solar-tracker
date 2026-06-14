@@ -35,6 +35,44 @@ TFG-solar-tracker/
 
 ---
 
+## Configuración manual obligatoria antes de compilar
+
+Hay tres parámetros que dependen del hardware instalado y deben ajustarse a mano antes de flashear.
+
+### 1. GPIOs de los finales de carrera — `bucle_control_v2/main/config.h`
+
+```c
+#define CFG_THETA_ENDSTOP_GPIO  -1   /* TODO: asignar GPIO real al instalar */
+#define CFG_PHI_ENDSTOP_GPIO    -1   /* TODO: asignar GPIO real al instalar */
+```
+
+El valor `-1` deshabilita la detección hardware y el homing se realiza por tiempo.
+Sustituir por el número de GPIO al que está conectado cada interruptor NC (activo en LOW, pull-up interno).
+Cableado esperado: pin NC del final de carrera → GPIO, pin COM → GND.
+
+### 2. Umbral de luminosidad — `proceso_cam_v1/main/vision.h`
+
+```c
+#define CAM_THRESHOLD   200     /* 0-255: pixels >= umbral contribuyen al centroide */
+```
+
+Valor entre 0 y 255. Solo los píxeles con intensidad ≥ `CAM_THRESHOLD` se incluyen en el cálculo del centroide solar.
+Debe ajustarse según las condiciones de iluminación del entorno: un valor demasiado bajo detecta falsas fuentes de luz; demasiado alto puede no detectar el sol en días nublados.
+El umbral también es ajustable en tiempo real desde el slider del `kivy_monitor` sin recompilar.
+
+### 3. FOV de la cámara — `bucle_control_v2/main/config.h`
+
+```c
+#define CFG_CAM_FOV_H_DEG   65.0f   /* campo de visión horizontal [°] */
+#define CFG_CAM_FOV_V_DEG   50.0f   /* campo de visión vertical   [°] */
+```
+
+Estos valores determinan la conversión píxel → grado que usa la cinemática inversa durante el seguimiento.
+Los valores por defecto (65° × 50°) son una estimación para el módulo AI-Thinker con OV2640 en QQVGA.
+Calibrar apuntando la cámara a una referencia conocida y midiendo cuántos píxeles de desplazamiento corresponden a un giro de ángulo conocido.
+
+---
+
 ## bucle_control_v2
 
 Firmware ESP-IDF para el ESP32 que controla dos actuadores lineales paso a paso.

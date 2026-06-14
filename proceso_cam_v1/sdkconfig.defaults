@@ -1,0 +1,8 @@
+# Sin PSRAM — usar DRAM interna
+CONFIG_SPIRAM=n
+
+# Tarea principal con stack suficiente
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+
+# Log nivel INFO por defecto
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y

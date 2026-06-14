@@ -1,0 +1,16 @@
+# ESP-IDF — generado automáticamente, no subir
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+
+# Claude Code — configuración local
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+*.db
+
+# VSCode — settings locales de cada máquina
+.vscode/

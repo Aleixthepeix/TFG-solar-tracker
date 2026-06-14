@@ -142,7 +142,6 @@ python solar_monitor.py
 - Alineación por predicción solar (`prueba_prediccion_hora_solar.py`)
 - Consola de comandos por WiFi (HTTP) o puerto serie USB
 
-
 ---
 
 ## Comunicación entre nodos
@@ -184,3 +183,19 @@ El directorio [`stewart/`](stewart/) contiene los scripts desarrollados durante 
 - **`mapeo_espacio_trabajo_ruta_solar.py`** — conecta con SolidWorks vía API COM (`win32com`) para barrer el espacio de trabajo angular de la plataforma real (−30° a +30° en φ y θ), verificar las restricciones cinemáticas en el ensamblaje CAD y superponer las trayectorias solares del solsticio y equinoccio, identificando qué porción de la ruta solar queda dentro del espacio de trabajo.
 
 Ver [`stewart/README.md`](stewart/README.md) para la descripción detallada de cada archivo.
+
+---
+
+## Código de desarrollo — Arquitectura alternativa de dos ejes
+
+> Código de prototipado previo al firmware final. No forma parte del bucle distribuido ESP32↔ESP32-CAM.
+
+El directorio [`arquitectura2/`](arquitectura2/) contiene los scripts de estudio del **mecanismo de dos ejes independientes** que se adoptó como solución definitiva al comprobar que la plataforma Stewart no cubría la trayectoria solar requerida. Cada eje (elevación y azimut) se acciona mediante un único actuador lineal (0–300 mm) a través de una cadena cinemática de barras articuladas.
+
+- **`solve_theta_elev.py`** — cinemática directa del eje de elevación: calcula el ángulo θ en función de la posición del carro y representa la función de transferencia del mecanismo.
+
+- **`solve_phi.py`** — lo mismo para el eje de azimut, con una geometría de transmisión diferente.
+
+- **`bucle_imagen_simulada.py`** — simulación completa en bucle cerrado: cinemática inversa numérica (método de Brent), modelo de cámara por proyección gnomónica, control proporcional con corrección de elevación y panel de visualización de actuadores. Permite validar el sistema sin hardware.
+
+Ver [`arquitectura2/README.md`](arquitectura2/README.md) para la descripción detallada de cada script.

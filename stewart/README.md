@@ -2,9 +2,10 @@
 
 Este directorio contiene el código desarrollado durante la fase de estudio y prototipado del TFG, **anterior al sistema de control final** (`bucle_control_v2` + `proceso_cam_v1`).
 
-Incluye dos líneas de trabajo independientes:
-1. **Bucle de control visual inicial** — prototipo del seguimiento solar sobre una plataforma Stewart simplificada.
-2. **Mapeo del espacio de trabajo** — análisis cinemático del ensamblaje real conectado a SolidWorks.
+Incluye tres líneas de trabajo:
+1. **Bucle de control visual inicial** — prototipo del seguimiento solar con imagen real (vídeo/webcam).
+2. **Validación con imagen simulada** — banco de pruebas en bucle cerrado sin hardware ni vídeo real.
+3. **Mapeo del espacio de trabajo** — análisis cinemático del ensamblaje real conectado a SolidWorks.
 
 ---
 
@@ -27,7 +28,26 @@ Primer prototipo del bucle de seguimiento solar. Integra visión artificial y ci
 
 ---
 
-## 2. Mapeo del espacio de trabajo y rutas solares
+## 2. Validación con imagen simulada
+
+### `imagen_simulada_prueba.py`
+
+Banco de pruebas en **bucle cerrado completamente sintético**: no requiere webcam, vídeo real ni hardware. Sirve para verificar que la cinemática inversa y el controlador reaccionan correctamente ante un input de sol virtual.
+
+**Flujo:**
+1. El usuario posiciona el sol virtual moviendo dos sliders de OpenCV (φ y θ en grados, rango −30° a +30°)
+2. `SimuladorCamara.generar_frame()` genera un frame sintético: dibuja un círculo blanco desplazado del centro en función del **error** entre la posición del sol en el "cielo" y la orientación actual de la plataforma, replicando lo que vería una cámara montada sobre ella
+3. El pipeline de visión idéntico al de `bucle_control_v1.py` (umbralización + centroide por momentos) detecta el punto brillante y calcula el vector de error en píxeles
+4. El controlador proporcional (Kp = 0.2) convierte el error en incrementos angulares y actualiza la orientación acumulada de la plataforma
+5. La cinemática inversa recalcula las longitudes de los actuadores y el visualizador 3D de Matplotlib muestra la plataforma moviéndose en tiempo real
+
+**Lo que valida:** al mover los sliders, la plataforma debe converger hacia la posición del sol virtual y estabilizarse cuando el error es cero (sol centrado en imagen). Esto confirma que la cinemática inversa y el signo del control son correctos antes de probar con hardware real.
+
+**Dependencias:** `opencv-python`, `numpy`, `matplotlib`
+
+---
+
+## 3. Mapeo del espacio de trabajo y rutas solares
 
 ### `mapeo_espacio_trabajo_ruta_solar.py`
 

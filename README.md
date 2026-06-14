@@ -58,7 +58,7 @@ Cableado esperado: pin NC del final de carrera → GPIO, pin COM → GND.
 
 Valor entre 0 y 255. Solo los píxeles con intensidad ≥ `CAM_THRESHOLD` se incluyen en el cálculo del centroide solar.
 Debe ajustarse según las condiciones de iluminación del entorno: un valor demasiado bajo detecta falsas fuentes de luz; demasiado alto puede no detectar el sol en días nublados.
-El umbral también es ajustable en tiempo real desde el slider del `kivy_monitor` sin recompilar.
+El umbral es ajustable en tiempo real desde el slider del `kivy_monitor` solo para el cliente en PC.
 
 ### 3. FOV de la cámara — `bucle_control_v2/main/config.h`
 

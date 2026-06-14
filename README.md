@@ -144,6 +144,20 @@ python solar_monitor.py
 
 ---
 
+## Código de desarrollo — Plataforma Stewart
+
+> Código previo al sistema de control final. No forma parte del bucle distribuido ESP32↔ESP32-CAM.
+
+El directorio [`stewart/`](stewart/) contiene los scripts desarrollados durante la fase de estudio y prototipado con una **plataforma de Gough-Stewart** de 6 actuadores. Hay dos líneas de trabajo:
+
+- **`bucle_control_v1.py`** — primer prototipo del seguimiento solar: visión artificial (OpenCV) + cinemática inversa + control proporcional, todo en un único script de PC. Usa una plataforma triangular simplificada y visualiza el movimiento en 3D con Matplotlib en tiempo real.
+
+- **`mapeo_espacio_trabajo_ruta_solar.py`** — conecta con SolidWorks vía API COM (`win32com`) para barrer el espacio de trabajo angular de la plataforma real (−30° a +30° en φ y θ), verificar las restricciones cinemáticas en el ensamblaje CAD y superponer las trayectorias solares del solsticio y equinoccio, identificando qué porción de la ruta solar queda dentro del espacio de trabajo.
+
+El resto de scripts son simulaciones, pruebas de umbralización y utilidades de análisis. Ver [`stewart/README.md`](stewart/README.md) para la descripción detallada de cada archivo.
+
+---
+
 ## Comunicación entre nodos
 
 | Endpoint | Nodo | Descripción |

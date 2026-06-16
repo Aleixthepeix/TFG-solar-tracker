@@ -1,0 +1,62 @@
+\chapter{Motivación y antecedentes}
+\label{ch:antecedentes}
+
+El tratamiento superficial y la sinterización mediante energía solar surgen como respuesta a la necesidad de democratizar y descentralizar los procesos térmicos industriales, sustituyendo la alta demanda eléctrica tradicional por una fuente energética renovable e inagotable. Si bien el aprovechamiento térmico de la radiación solar es una tecnología consolidada a escala industrial, como se evidencia en los heliostatos de las plantas termosolares de concentración, estas infraestructuras carecen de la agilidad y los grados de libertad cinemáticos exigidos en el tratamiento superficial, donde es imperativo trazar patrones de alta precisión. Además, su diseño macroscópico requiere instalaciones de gran envergadura, lo que inhabilita su implementación en entornos de trabajo con espacio limitado.
+
+Por otro lado, la tecnología de seguimiento solar se encuentra ampliamente desarrollada y estandarizada en la industria fotovoltaica. Estos sistemas comerciales, típicamente articulados mediante uno o dos ejes, están diseñados para mantener la perpendicularidad del panel maximizando la captación de luz solar, y aportan a la literatura modelos astronómicos consolidados para el cálculo preciso de efemérides (ángulo cenital y acimutal).
+
+No obstante, su concepción mecánica presenta una limitación geométrica insalvable para el propósito de este proyecto: los ejes de rotación pivotan intrínsecamente sobre el centro de gravedad (o centro geométrico) del propio panel. Al no estar concebidos para concentrar la luz mediante ópticas, no contemplan la necesidad de mantener un punto focal estático en el espacio tridimensional. Esta restricción los hace inviables para aplicaciones de sinterización, donde tanto la distancia focal nominal de la lente como la posición absoluta del lecho de arena deben permanecer estrictamente inmutables durante toda la fase de operación.
+
+
+
+\section{Arquitecturas robóticas espaciales: Seriales frente a Paralelas}
+
+Un robot comúnmente empleado a la hora de trazar patrones en superficies planas es una estructura robótica de pórtico cartesiano, usada frecuentemente en impresión 3D. Sin embargo, las deficiencias de rigidez y precisión inherentes a este tipo de arquitectura frente a perturbaciones externas nos obligan a recurrir a manipuladores espaciales avanzados. En el campo de la robótica industrial, las arquitecturas cinemáticas se dividen fundamentalmente en dos grandes familias: seriales y paralelas. El análisis comparativo de ambas topologías es determinante para justificar la elección mecánica de este proyecto.
+
+\subsection{Manipuladores Seriales}
+Los robots seriales consisten en una sucesión de eslabones conectados por articulaciones motorizadas, desde una base fija hasta el efector final. El ejemplo más conocido de este tipo de robótica es el brazo antropomórfico industrial. Su principal ventaja en el proyecto planteado radica en un amplio volumen de trabajo espacial.
+
+No obstante, esta configuración presenta graves inconvenientes para la tarea de seguimiento solar de precisión en exteriores. Al tratarse de una estructura en voladizo, cada actuador debe soportar el peso de todos los eslabones subsiguientes, lo que resulta en una baja relación carga-peso. Desde el punto de vista de la precisión, el sistema sufre de error acumulativo: cualquier holgura mecánica o imprecisión en las articulaciones de la base se amplifica geométricamente a lo largo de la cadena hasta llegar a la lente. Además, su baja rigidez estructural los hace extremadamente vulnerables a vibraciones inducidas por el viento, dado que el perfil plano de la lente de Fresnel actúa como una superficie aerodinámica. Por consiguiente, la robótica serial queda descartada para esta aplicación.
+
+\subsection{Manipuladores Paralelos}
+En contraposición, las arquitecturas robóticas paralelas se fundamentan en mecanismos de lazo cerrado. En esta configuración, el efector final está sustentado simultáneamente por múltiples cadenas cinemáticas independientes o actuadores que se anclan a una base estática. La plataforma Gough-Stewart pertenece a este conjunto.
+
+Este tipo de arquitectura destaca por una elevada rigidez estructural debido a la distribución de la carga en diferentes puntos de la estructura, eliminando casi por completo los momentos flectores en las uniones. 
+
+Otra ventaja a destacar es la alta precisión no acumulativa. A diferencia de los brazos seriales, el error de posicionamiento de un actuador lineal en una plataforma paralela no se suma al de los demás. Esta característica garantiza que la lente mantenga la perpendicularidad y el centro focal estricto sin sufrir derivas mecánicas.
+
+Como última ventaja decisiva cabe destacar la alta capacidad de carga dinámica. Este tipo de mecanismos permiten mover conjuntos ópticos pesados con motores de menor potencia y tamaño.
+
+\subsection{Compromiso cinemático}
+A pesar de su indiscutible superioridad estructural y de precisión, la literatura científica es unánime respecto a la principal limitación de los manipuladores paralelos: un espacio de trabajo angular considerablemente más reducido que el de las configuraciones seriales. La inclinación de la plataforma se ve rápidamente coartada por colisiones físicas entre los propios actuadores, los límites mecánicos de las juntas universales y las singularidades matemáticas donde el mecanismo pierde o gana grados de libertad incontrolados.
+
+Esta restricción angular intrínseca entra en conflicto directo con las amplias trayectorias cenitales que exige el seguimiento solar (especialmente durante los amaneceres, atardeceres y el solsticio de invierno). Por lo tanto, la adopción de una arquitectura paralela exige imperativamente un estudio previo de viabilidad cinemática.
+
+\section{Sistemas de control y retroalimentación visual}
+Una vez definida la arquitectura mecánica idónea, el segundo pilar fundamental del seguimiento solar es la estrategia de control. En la literatura técnica, los sistemas de apuntamiento se dividen en dos grandes categorías según su flujo de información: sistemas de lazo abierto y sistemas de lazo cerrado.
+
+En los sistemas de lazo abierto la salida no tiene efecto sobre la entrada. Para el caso de un seguidor solar, un ejemplo de este sistema de control sería un microcontrolador que procesa la fecha, la hora y las coordenadas GPS para determinar el vector solar teórico, y envía las instrucciones cinemáticas a los motores. Aunque matemáticamente precisos, estos sistemas no pueden detectar ni compensar errores físicos de la instalación, como una nivelación deficiente del terreno, holguras mecánicas generadas por el desgaste o dilataciones térmicas del material. En procesos de concentración solar para sinterización, donde una desviación de una fracción de grado desplaza el punto focal fuera de la zona de trabajo, el lazo abierto resulta insuficiente.
+
+Para garantizar la fiabilidad del proceso, es imprescindible implementar un sistema de lazo cerrado. En los sistemas de control de lazo cerrado, la salida se realimenta mediante sensores y se compara con la entrada. La nueva señal se envía a los actuadores con un ajuste proporcional a la diferencia entre la entrada y la salida a través del sistema, para disminuir el error y corregir la salida. Tradicionalmente, la industria fotovoltaica ha empleado fotorresistencias (\gls{LDR}) dispuestas en cruz para buscar el punto de máxima iluminación. Sin embargo, estos sensores son susceptibles a la radiación difusa (nubes o reflejos) y ofrecen una resolución muy baja.
+
+La alternativa más avanzada y robusta es la retroalimentación mediante visión artificial. La integración de una cámara digital solidaria al plano de la lente óptica permite capturar el disco solar en tiempo real. Mediante algoritmos de procesamiento de imagen, el sistema es capaz de calcular el centroide de la fuente luminosa y determinar su desviación (vector de error) respecto al centro óptico ideal del sensor. Esta información alimenta el algoritmo de cinemática inversa del robot paralelo, permitiendo obtener la máxima perpendicularidad posible en cada intervalo de corrección. Este enfoque anula cualquier perturbación mecánica o error de montaje, siendo la opción tecnológica seleccionada para gobernar la cinemática de este proyecto.
+
+\section{Antecedentes directos: Sistemas para sinterización solar}
+
+El desarrollo de un sistema mecatrónico avanzado para el seguimiento solar carecería de propósito sin la validación previa de la viabilidad termodinámica del proceso. La capacidad de utilizar radiación solar concentrada para alcanzar las temperaturas de vitrificación necesarias en lechos de polvo ha sido objeto de estudio en diversos campos, desde la ciencia de materiales hasta la exploración aeroespacial.
+
+Los fundamentos físicos de este proceso se asientan sobre estudios previos como los del  Dr. Mohammad Al-Dabbas(2013)\cite{Mohammad}, quienes analizaron empíricamente las temperaturas requeridas para la vitrificación de la arena de cuarzo mediante el uso de lentes de Fresnel.
+
+Sin embargo, el hito tecnológico que articula la motivación central de este proyecto es el trabajo desarrollado por Markus Kayser (2011)\cite{kayser2011} en su proyecto de graduación \textit{The Solar Sinter} para el Royal College of Art. Kayser logró materializar el primer sistema autónomo de fabricación aditiva en el desierto del Sahara, combinando el aprovechamiento térmico de la energía solar con la precisión de la tecnología de control numérico (\gls{CNC}).
+
+El prototipo original de Kayser validó el proceso productivo descentralizado operando bajo las siguientes especificaciones técnicas:
+
+\begin{itemize}
+    \item \textbf{Sistema óptico y térmico:} Empleo de un concentrador basado en una lente de Fresnel plana de polimetilmetacrilato (\gls{PMMA}) con un área de captación aproximada de $1\text{ m}^2$. Este conjunto óptico permitía concentrar la luz en un punto focal de alta densidad energética, alcanzando temperaturas de trabajo de entre $1400^\circ\text{C}$ y $1600^\circ\text{C}$, suficientes para la fusión de la sílice.
+    \item \textbf{Suministro energético híbrido:} La máquina fue concebida como un sistema totalmente autónomo (\textit{off-grid}). Mientras que la lente proveía pasivamente la energía térmica para la fusión, el sistema eléctrico dependía de paneles fotovoltaicos convencionales que alimentaban el movimiento de los motores, la lógica de control y la carga de baterías.
+    \item \textbf{Propiedades del proceso:} Fusión directa de arena de sílice natural del entorno. El material resultante experimentaba una transición de fase hacia la vitrificación por sinterización térmica, construyendo objetos tridimensionales capa por capa mediante el descenso mecánico de una cama de polvo.
+\end{itemize}
+
+El éxito de \textit{The Solar Sinter} demostró la viabilidad de una manufactura completamente in situ y democratizada, abriendo nuevas líneas de investigación en entornos donde los recursos son limitados o el transporte de materiales es inviable. 
+
+Tras la validación experimental de la sinterización solar mediante CNC por Kayser (2011)\cite{kayser2011}, diversas investigaciones han expandido su aplicación tanto en la Tierra como en el espacio. Por un lado, estudios aeroespaciales (\cite{Hoheneder2017AdvancingSS}; \cite{MEURISSE2018800}; \cite{Fateri2019}) han demostrado la viabilidad de imprimir estructuras tridimensionales con regolito lunar simulado para construir bases extraterrestres sin necesidad de aglomerantes químicos. Por otro lado, a nivel terrestre, esta tecnología se plantea como una solución sostenible para construir refugios humanitarios en zonas desérticas aprovechando recursos locales inagotables (\cite{su16062294}). Todo este respaldo teórico y aplicado demuestra el potencial de la fabricación aditiva solar y justifica la necesidad de desarrollar plataformas robóticas de seguimiento más precisas (como la arquitectura paralela propuesta en este trabajo).

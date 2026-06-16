@@ -1,0 +1,56 @@
+
+\begin{longtable}{lcp{.8\textwidth} }
+\multicolumn{3}{l}{\textbf{Mayúsculas}}\\
+\\
+$A$        & --- & Carrera del actuador lineal en el mecanismo cenital de la arquitectura alternativa (mm).\\
+$A_1,A_2,A_3$ & --- & Posiciones del carro del actuador lineal sobre su guía: $A_2$ es la posición instantánea; $A_1$ y $A_3$ los extremos de carrera (mm).\\
+$B_i,B_j$  & --- & Puntos de anclaje de la base fija de la plataforma Gough-Stewart (-).\\
+$C$        & --- & Punto focal de la lente; centro de rotación de la plataforma móvil.\\
+$FOV$      & --- & Campo de visión de la cámara (\emph{Field Of View}); se distinguen las componentes horizontal y vertical (rad).\\
+$K_p$      & --- & Ganancia proporcional del sistema de control visual.\\
+$M_{pq}$   & --- & Momento de imagen de orden $(p,q)$ empleado en el cálculo del centroide (-).\\
+$O$        & --- & Origen del sistema de coordenadas.\\
+$P,P_i$    & --- & Puntos de anclaje de la plataforma móvil de la plataforma Gough-Stewart (-).\\
+$P_i^{rot}$ & --- & Posición de los vértices de la plataforma tras aplicar la rotación (-).\\
+$R$        & --- & Matriz de rotación combinada de la plataforma Gough-Stewart (-).\\
+$R_x,R_y,R_z$ & --- & Matrices de rotación elementales en torno a los ejes $X$, $Y$ y $Z$ (-).\\
+$T$        & --- & Umbral de intensidad luminosa para la umbralización de la imagen (-).\\
+$X,Y,Z$    & --- & Ejes del sistema de coordenadas tridimensional (-).\\
+\\
+\\
+\multicolumn{3}{l}{\textbf{Minúsculas}}\\
+\\
+$a$        & --- & Hipotenusa del triángulo auxiliar del lado del actuador en el mecanismo cenital (mm).\\
+$b$        & --- & Hipotenusa del triángulo auxiliar del lado del portalente en el mecanismo cenital (mm).\\
+$c_{cam,x},c_{cam,y}$ & --- & Coordenadas del centro óptico de la cámara sobre el plano imagen (px).\\
+$d$        & --- & Día del año empleado en el cálculo de la declinación solar.\\
+$\vec{e}$  & --- & Vector de error de apuntamiento, de componentes $(e_x,e_y)$ (px).\\
+$f$        & --- & Distancia focal de la lente de Fresnel; también distancia focal en el modelo de cámara (mm).\\
+$\textit{height}$ & --- & Alto de la imagen capturada (px).\\
+$l_i$      & --- & Longitud del actuador lineal $i$ de la plataforma Gough-Stewart (mm).\\
+$l_i^{rot}$ & --- & Longitud del actuador $i$ tras la rotación de la plataforma (mm).\\
+$s$        & --- & Carrera del actuador lineal del mecanismo acimutal (mm).\\
+$w$        & --- & Ancho del sensor de la cámara (mm).\\
+$\textit{width}$ & --- & Ancho de la imagen capturada (px).\\
+$\bar{x},\bar{y}$ & --- & Coordenadas del centroide de la región solar detectada (px).\\
+\\
+\\
+\multicolumn{3}{l}{\textbf{Letras griegas}}\\
+\\
+$\alpha_{FOV}$ & --- & Ángulo de campo de visión de la cámara (rad).\\
+$\delta$   & --- & Declinación solar (grados).\\
+$\delta_{cota,i}$ & --- & Valor de cota inyectado en la API de SolidWorks para el actuador $i$ (m).\\
+$\Delta l_i$ & --- & Desplazamiento lineal requerido por el actuador $i$ (mm).\\
+$\Delta\theta,\Delta\phi$ & --- & Incrementos angulares de corrección calculados por el sistema de visión (rad).\\
+$\theta$   & --- & Ángulo de elevación: ángulo de Euler de elevación (eje $Y$) en la plataforma Gough-Stewart, y ángulo cenital de salida del portalente en el mecanismo cenital (rad).\\
+$\theta_z$ & --- & Ángulo cenital solar, medido desde la vertical del observador (grados).\\
+$\theta_A,\theta_B,\theta_C$ & --- & Ángulos interiores de los triángulos auxiliares del mecanismo cenital (rad).\\
+$\theta_{OB},\theta_{OC}$ & --- & Orientaciones de los segmentos $OB$ y $OC$ del mecanismo acimutal respecto a la horizontal (rad).\\
+$\theta_{ref}$ & --- & Orientación angular de referencia (posición solar) en el bucle de control (rad).\\
+$\rho_i$   & --- & Longitudes características de los eslabones de los mecanismos de la arquitectura MANTIS (mm).\\
+$\varphi$  & --- & Latitud geográfica del emplazamiento (grados).\\
+$\phi$     & --- & Ángulo acimutal: ángulo de Euler de cabeceo (eje $X$) en la plataforma Gough-Stewart, y ángulo acimutal de salida en el mecanismo acimutal (rad).\\
+$\phi_a$   & --- & Ángulo acimutal solar, medido desde el sur geográfico (grados).\\
+$\psi$     & --- & Ángulo de Euler de guiñada (eje $Z$) en la plataforma Gough-Stewart (rad).\\
+$\omega$   & --- & Ángulo horario solar (grados).\\
+\end{longtable}

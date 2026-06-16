@@ -1,0 +1,44 @@
+\chapter{Objetivos}
+\label{ch:objetivos}
+
+El presente Trabajo Fin de Grado se articula en torno a un objetivo principal del que se derivan cuatro objetivos específicos. Todos ellos han sido acordados con el director del proyecto y se enmarcan dentro del periodo de ejecución comprendido entre septiembre de 2025 y junio de 2026, coincidente con el último curso del Grado en Ingeniería Aeroespacial.
+
+\section{Objetivo principal}
+\paragraph{OP.}
+Evaluar, diseñar y validar cinemáticamente una arquitectura robótica de seguimiento solar capaz de mantener una lente de Fresnel orientada perpendicularmente al sol con punto focal estático, para una aplicación de sinterización solar de arena en la latitud de Toledo.
+
+\medskip
+
+Este objetivo principal define el marco completo del trabajo. Se considera alcanzado cuando se dispone de una arquitectura robótica cuyo espacio de trabajo angular contiene la trayectoria solar útil a lo largo del año en la ubicación geográfica de referencia ($\varphi = 39{,}87^{\circ}\mathrm{N}$), y cuya cinemática ha sido validada virtualmente mediante cosimulación. Queda fuera del alcance del proyecto la construcción y caracterización experimental del prototipo a escala real ya que esta tarea se realiza paralelamente por el grupo de investigación MANTIS. La integración del lecho de polvo y la caracterización térmica del proceso de sinterización corresponden a líneas de trabajo futuras.
+
+\section{Objetivos específicos}
+\subsection{OE1. Algoritmo de visión artificial}
+Desarrollar un algoritmo de visión artificial que cuantifique el error angular de apuntamiento entre el eje óptico del sistema y la posición del sol, a partir de imágenes capturadas por una cámara solidaria al mecanismo.
+
+Este objetivo constituye una unidad funcional independiente: el algoritmo puede desarrollarse y verificarse al margen de la arquitectura mecánica concreta sobre la que vaya a operar. Su grado de consecución es medible mediante la capacidad del algoritmo para detectar el disco solar bajo condiciones atmosféricas variables y entregar un vector de error en píxeles convertible a magnitudes angulares. El marco temporal de desarrollo se extendió entre febrero y marzo de 2026.
+
+\subsection{OE2. Evaluación cinemática de la plataforma Gough-Stewart}
+Evaluar la viabilidad cinemática de una plataforma paralela Gough-Stewart de seis grados de libertad como arquitectura de seguimiento solar.
+
+La evaluación se considera completa cuando se dispone del modelo de cinemática inversa de la plataforma, del mapeado discretizado de su espacio de trabajo angular utilizando un modelo en SolidWorks como gemelo digital y de la superposición de dicho mapeado con las trayectorias solares correspondientes a los días astronómicos críticos (solsticios y equinoccios) en la latitud de Toledo. El criterio de éxito de este objetivo es alcanzar una conclusión cuantitativa y justificada sobre la idoneidad de la plataforma, sea positiva o negativa. El marco temporal de desarrollo fue paralelo al del objetivo OE1, extendiéndose hasta mediados de abril de 2026.
+
+\subsection{OE3. Síntesis de la arquitectura alternativa}
+Sintetizar una arquitectura robótica alternativa cuyo espacio de trabajo contenga íntegramente las trayectorias solares útiles a lo largo del año, en caso de descartarse la plataforma Gough-Stewart.
+
+Este objetivo es condicional a los resultados del OE2 y, en caso de activarse, su grado de consecución se mide en función del barrido angular efectivo del nuevo mecanismo en los ejes acimutal y cenital, contrastado con los requerimientos astronómicos. El planteamiento es deliberadamente realista: no se persigue maximizar el espacio de trabajo, sino dimensionarlo para que cubra el intervalo de horas solares de mayor irradiancia útil para el proceso de sinterización, evitando el sobredimensionamiento mecánico. El marco temporal de desarrollo se extiende de mediados de abril a mediados de mayo de 2026.
+
+\subsection{OE4. Implementación del sistema de control distribuido}
+Implementar un sistema de control distribuido en lazo cerrado que integre la visión artificial desarrollada en el OE1 con la cinemática inversa de la arquitectura seleccionada, comandando los actuadores hacia la posición que minimice el error de apuntamiento.
+
+El sistema de control debe operar de forma autónoma, sin requerir intervención humana durante el funcionamiento normal ni dependencia de infraestructuras externas como conexión a internet. Su consecución es medible a través de la respuesta del lazo cerrado frente a desviaciones inducidas en el apuntamiento. Las limitaciones extrínsecas que han condicionado el diseño son el uso de microcontroladores de bajo coste (ESP32) y la disponibilidad de un único equipo informático para tareas de supervisión. El marco temporal de desarrollo se extiende de mediados de mayo a mediados de junio de 2026.
+
+\section{Límites y alcance del proyecto}
+Conviene explicitar los límites extrínsecos que han acotado el alcance del TFG:
+
+\begin{itemize}
+\item{Validación Física:} El equipo MANTIS proporcionó hardware como un motor paso a paso, un driver y una fuente de alimentación así como microcontroladores ESP32-CAM para una validación del software. Sin embargo, la validación empírica del conjunto mecatrónico se delega al grupo de investigación.
+
+\item{Equipamiento software:} se dispone de licencia educativa de SolidWorks proporcionada por la Universidad de Castilla-La Mancha, lo que ha determinado la elección del entorno CAD para la cosimulación.
+
+\item{Tiempo:} el TFG corresponde a 12 ECTS, equivalentes a aproximadamente 300 horas de dedicación efectiva del alumno. Esta restricción justifica que la validación del sistema sea virtual y no empírica, y que el alcance se limite al diseño cinemático sin abordar el análisis dinámico ni estructural detallado del mecanismo.
+\end{itemize}

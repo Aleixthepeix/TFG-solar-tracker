@@ -1,0 +1,156 @@
+\chapter{Resultados y discusión}
+\label{ch:resultados}
+
+
+Este capítulo recoge los resultados obtenidos a lo largo del proyecto y los discute en relación con los objetivos planteados en el Capítulo~\ref{ch:objetivos}. Los resultados se presentan organizados por bloques temáticos (algoritmo de visión, evaluación de la plataforma Gough-Stewart, síntesis de la arquitectura alternativa y sistema de control distribuido) y se cierra el capítulo con un balance del grado de cumplimiento de cada objetivo específico. Se incluyen tanto los resultados positivos como el principal resultado negativo del proyecto: la inviabilidad cinemática de la plataforma Gough-Stewart, cuya documentación sistemática constituye en sí misma una contribución del trabajo.
+
+\section{Resultados del algoritmo de visión}
+\label{sec:res_vision}
+
+El algoritmo de visión artificial desarrollado para el cálculo del centroide solar se ha validado experimentalmente sobre vídeo real capturado en exteriores (Figura~\ref{fig:conjunto_deteccion}, Capítulo~\ref{ch:desarrollo}). Los principales resultados obtenidos son los siguientes:
+
+\begin{description}
+
+\item[Capacidad de detección bajo condiciones reales.] El algoritmo localiza correctamente el disco solar y entrega el vector de error de apuntamiento en presencia de cobertura nubosa parcial y de reflejos especulares en el objetivo. La combinación de filtrado solar óptico, umbralización por intensidad y cálculo del centroide por momentos ponderados ha demostrado ser robusta para las condiciones operativas del sistema.
+
+\item[Resolución sub-píxel efectiva.] El uso de momentos ponderados por intensidad (en lugar de la umbralización binaria clásica) proporciona al centroide una resolución efectiva inferior al píxel. Esta propiedad resulta especialmente valiosa en la implementación embebida a resolución QQVGA, donde compensa parcialmente la baja resolución espacial del sensor.
+
+\item[Portabilidad entre plataformas.] El algoritmo se ha implementado dos veces, en Python (prototipo PC con OpenCV) y en C (firmware ESP32-CAM). Ambas implementaciones producen resultados equivalentes sobre la misma imagen, lo que permite validar el comportamiento del sistema embebido contrastándolo contra el prototipo PC durante el desarrollo. Esta dualidad de implementaciones se ha aprovechado además en la consola Python, que ejecuta el algoritmo localmente como segundo testigo del centroide reportado por el ESP32-CAM (Sección~\ref{sec:nodo_consola}).
+
+\end{description}
+
+\section{Descarte de la plataforma Gough-Stewart}
+\label{sec:res_stewart}
+
+La evaluación cinemática de la plataforma Gough-Stewart clásica como arquitectura de seguimiento solar constituye el principal resultado negativo del proyecto. Su documentación detallada es relevante porque excluye sistemáticamente una topología cinemática plausible y justifica la adopción de la arquitectura alternativa.
+
+\subsection{Espacio de trabajo angular obtenido}
+
+El mapeado discretizado del espacio de trabajo angular de la plataforma, obtenido mediante cosimulación entre Python y SolidWorks (Sección~\ref{sec:cosimulacion}), arrojó un espacio efectivo de operación aproximadamente igual a $\pm 20^{\circ}$ en elevación y $\pm 25^{\circ}$ en acimut. El espacio resulta severamente restringido por dos fenómenos:
+
+\begin{itemize}
+    \item Singularidades cinemáticas inherentes a la topología 
+    paralela espacial de seis grados de libertad, donde el 
+    determinante de la matriz jacobiana se anula y el mecanismo 
+    pierde o gana grados de libertad incontrolados.
+    \item Colisiones físicas entre los actuadores lineales y entre 
+    estos y la propia plataforma móvil, detectadas por el motor 
+    geométrico de SolidWorks tras la reconstrucción del ensamblaje.
+\end{itemize}
+
+\subsection{Incompatibilidad con las trayectorias solares}
+El cruce del espacio de trabajo obtenido con las trayectorias solares calculadas analíticamente para la latitud de Toledo (Figura~\ref{fig:EspacioTrabajo}) revela que la plataforma no contiene ninguna de las tres trayectorias correspondientes a las fechas astronómicas de referencia un marco temporal suficientemente amplio como para ser aprovechable:
+
+\begin{itemize}
+	\item La trayectoria del solsticio de invierno discurre 
+    íntegramente por encima del rango cenital alcanzable: el sol no 
+    se eleva por debajo de los $63^{\circ}$ de ángulo cenital ese día, 
+    valor que excede ampliamente los $25^{\circ}$ máximos del 
+    mecanismo.
+    
+	\item La trayectoria del equinoccio mantiene 
+    igualmente el ángulo cenital por encima del rango operativo de la 
+    plataforma durante todas las horas con sol sobre el horizonte.    
+    
+    \item La trayectoria del solsticio de verano alcanza un 
+    mínimo de $16^{\circ}$ de ángulo cenital durante el mediodía 
+    solar, valor sí dentro del rango de la plataforma. Sin embargo, 
+    el intervalo de tiempo durante el cual la trayectoria permanece 
+    contenida en el espacio de trabajo no supera la hora, lo que 
+    hace inviable cualquier aprovechamiento energético útil incluso 
+    en el día de mayor irradiación del año.
+\end{itemize}
+
+\subsection{Valor metodológico del resultado negativo}
+Aunque negativo, este resultado tiene valor en tres planos. En primer lugar, constituye un argumento cuantitativo para descartar la topología Gough-Stewart en aplicaciones de seguimiento solar a latitudes medias: trabajos futuros pueden ahorrarse esta evaluación apoyándose en los datos aquí presentados. En segundo lugar, valida la metodología de cosimulación empleada, que ha sido capaz de detectar singularidades y colisiones que un análisis puramente analítico habría pasado por alto. En tercer lugar, motiva y justifica de forma explícita la síntesis de la arquitectura alternativa que se presenta a continuación, sin la cual el proyecto carecería de fundamento para la decisión de rediseño.
+
+\section{Arquitectura alternativa: rango angular alcanzado}
+\label{sec:res_mantis}
+
+La arquitectura híbrida desarrollada como respuesta al descarte de la plataforma Gough-Stewart consigue cubrir holgadamente el rango angular requerido por las trayectorias solares en la latitud de Toledo. La Tabla~\ref{tab:res_mantis} compara los rangos alcanzados por cada uno de los dos mecanismos con los requerimientos astronómicos del peor caso anual.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Eje} & \textbf{Requerido} & \textbf{Alcanzado por la nueva arquitectura} \\
+        \midrule
+        Acimutal (mec. Stephenson III) & $\sim 240^{\circ}$  & $240^{\circ}$ \\
+        Cenital (mec. biela-manivela)  & $16^{\circ}$--$80^{\circ}$ & $0^{\circ}$--$80^{\circ}$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparación entre los rangos angulares requeridos por las 
+    trayectorias solares en Toledo (peor caso anual, solsticio de 
+    verano) y los rangos efectivos alcanzados por los dos mecanismos 
+    de la arquitectura alternativa. El rango cenital se expresa como 
+    ángulo medido desde la vertical (cenit).}
+    \label{tab:res_mantis}
+\end{table}
+
+En el eje cenital, el mecanismo cubre desde el cenit ($0^{\circ}$) hasta los $80^{\circ}$ de ángulo cenital. Por el extremo superior, el sol nunca asciende por encima de los $16^{\circ}$ cenitales en la latitud de Toledo, de modo que el límite del mecanismo en el cenit deja un margen amplio. Por el extremo inferior, el mecanismo no alcanza los últimos $10^{\circ}$ próximos al horizonte ($80^{\circ}$ a $90^{\circ}$ cenitales); esta limitación no compromete la operación, ya que con el sol tan rasante la irradiancia disponible es demasiado baja para resultar útil al proceso de sinterización. El rango efectivamente aprovechable de la trayectoria solar queda, por tanto, íntegramente contenido en el espacio de trabajo del mecanismo.
+
+El desacoplamiento cinemático entre ambos mecanismos constituye la propiedad distintiva del resultado: el espacio de trabajo combinado es el producto cartesiano de los dos rangos individuales, sin acoplamientos cruzados. Esta separabilidad estructural hace que la verificación del cumplimiento de los requerimientos astronómicos sea analítica e inmediata, sin necesidad del costoso mapeado numérico que sí requirió la plataforma Gough-Stewart. Las trayectorias solares quedan íntegramente contenidas en el espacio de trabajo combinado durante todas las horas con sol sobre el horizonte y para todas las fechas del año.
+
+\section{Validación del sistema de control distribuido}
+\label{sec:res_control}
+El sistema de control distribuido descrito en la Sección~\ref{sec:Materializacion} se ha integrado y verificado sobre el hardware mínimo proporcionado por el grupo de investigación MANTIS (los dos microcontroladores, la cámara y un motor paso a paso de prueba con su \emph{driver} y fuente de alimentación). Los resultados de la integración son los siguientes:
+
+\begin{description}
+	\item[Operación autónoma del lazo cerrado.] El sistema trata completar el ciclo funcional previsto: arranque y calibración del origen, búsqueda del sol mediante barrido sistemático, transición al seguimiento fino al detectar el disco solar, y corrección periódica de la orientación a partir del vector de error visual. Las transiciones entre los estados de la máquina de estados (Figura~\ref{fig:fsm_motor}) se producen según las condiciones diseñadas. Sin embargo, debido a que el bucle de control solo se cierra al montar el sistema distribuido en la arquitectura alternativa, ha sido inviable verificar el completo y correcto funcionamiento de todas las acciones diseñadas del sistema de control.
+	
+	\item[Independencia de infraestructura externa.] El sistema opera sin conexión a internet ni dependencia de routers o servidores externos. El nodo de visión genera su propia red WiFi local, a la que se conectan el nodo de control y la estación de supervisión. Esta autonomía es coherente con el escenario de aplicación previsto, fabricación descentralizada en entornos con recursos limitados, donde no puede asumirse la disponibilidad de infraestructura de comunicaciones.
+	
+	\item[Robustez frente a pérdidas transitorias.] El sistema mantiene el seguimiento ante pérdidas momentáneas del sol (cobertura nubosa pasajera) gracias a la histéresis de la máquina de estados, y tolera reinicios o desconexiones puntuales de la red sin requerir intervención manual, gracias a la reconexión automática y la persistencia de la posición de los actuadores.
+	
+	\item[Control predictivo sin acumulación de error.] El esquema de corrección por posición absoluta, en lugar de desplazamiento incremental, evita la acumulación de error de cuantificación a lo largo de sucesivos ciclos de seguimiento, manteniendo la coherencia entre el estado angular estimado y la posición física de los actuadores.	
+\end{description}
+
+La validación empírica completa del sistema sobre el prototipo mecánico final, incluyendo la calibración del campo de visión de la cámara, la caracterización de la deriva del contador de pasos y la verificación del comportamiento durante un ciclo solar completo, queda delegada al grupo de investigación MANTIS, según el alcance acordado en los objetivos del proyecto.
+
+\section{Aportaciones originales del proyecto}
+\label{sec:aportaciones}
+Más allá del trabajo sistemático de evaluación, diseño y validación, el proyecto ha generado varias contribuciones originales en los planos metodológico, matemático y conceptual:
+
+\begin{description}
+\item[Metodología de modelado dual para validación cruzada.] El algoritmo de visión y la cinemática del sistema se han implementado en dos plataformas independientes (Python sobre PC y C sobre microcontrolador) que comparten la misma formulación matemática. Esta dualidad ha permitido validar el comportamiento del sistema embebido contrastándolo contra el prototipo de PC durante todo el desarrollo, anticipando errores de implementación antes de su despliegue sobre hardware. La misma idea se ha aprovechado en operación: la consola ejecuta el algoritmo de centroide en paralelo al nodo de visión, proporcionando una verificación cruzada permanente.
+
+\item[Cinemática inversa unificada para mecanismos desacoplados.] El desacoplamiento cinemático de la arquitectura alternativa se ha explotado para reducir el problema de cinemática inversa de ambos mecanismos a un único problema escalar de búsqueda de raíz, resuelto por una rutina común parametrizada por el mecanismo sobre el que opera. Esta unificación, imposible en una arquitectura paralela acoplada, simplifica drásticamente tanto el modelo matemático como su implementación en software.
+
+\item[Síntesis de una arquitectura robótica a medida.] Frente a la adopción directa de una topología estándar, el proyecto ha sintetizado una arquitectura híbrida específicamente dimensionada para los requerimientos del seguimiento solar a la latitud de estudio, combinando una cadena Stephenson III para el acimut y un mecanismo biela-manivela para la elevación. El dimensionamiento ajustado de los rangos angulares, sin sobredimensionamiento, constituye una decisión de diseño deliberada.
+
+\end{description}
+
+\section{Balance de cumplimiento de objetivos}
+\label{sec:balance_objetivos}
+
+Para cerrar el capítulo, se evalúa el grado de consecución de cada uno de los objetivos específicos planteados en el Capítulo~\ref{ch:objetivos}. La Tabla~\ref{tab:balance} resume el balance global.
+
+\begin{table}[htbp]
+    \centering
+    \footnotesize
+    \begin{tabular}{clc}
+        \toprule
+        \textbf{Objetivo} & \textbf{Descripción} & \textbf{Grado de consecución} \\
+        \midrule
+        OE1 & Algoritmo de visión artificial          & Completo \\
+        OE2 & Evaluación cinemática Gough-Stewart      & Completo \\
+        OE3 & Síntesis de arquitectura alternativa     & Completo \\
+        OE4 & Sistema de control distribuido           & Completo (validación virtual limitada) \\
+        \bottomrule
+    \end{tabular}
+    \caption{Balance del grado de cumplimiento de los objetivos 
+    específicos del proyecto.}
+    \label{tab:balance}
+\end{table}
+
+\begin{description}
+\item[OE1 --- Algoritmo de visión artificial.] Alcanzado. Se ha desarrollado y validado experimentalmente sobre vídeo real un algoritmo capaz de detectar el disco solar y cuantificar el error angular de apuntamiento bajo condiciones atmosféricas variables (Sección~\ref{sec:res_vision}).
+
+\item[OE2 --- Evaluación cinemática de la plataforma Gough-Stewart.] Alcanzado. La evaluación ha producido una conclusión cuantitativa y justificada negativa sobre la idoneidad de la plataforma, respaldada por el mapeado de su espacio de trabajo y su cruce con las trayectorias solares (Sección~\ref{sec:res_stewart}). Conviene recordar que un resultado negativo bien fundamentado satisface plenamente este objetivo, cuyo criterio de éxito era alcanzar una conclusión justificada, fuese cual fuese su signo.
+
+\item[OE3 --- Síntesis de la arquitectura alternativa.] Alcanzado. Activado por el resultado negativo del OE2, se ha sintetizado y validado cinemáticamente la arquitectura alternativa, cuyo rango angular cubre las trayectorias solares requeridas (Sección~\ref{sec:res_mantis}).
+
+\item[OE4 --- Sistema de control distribuido.] Alcanzado en su dimensión de diseño y validación virtual. El sistema de control se ha desarrollado completamente y se ha verificado de forma limitada su operación sobre el hardware mínimo disponible (Sección~\ref{sec:res_control}). La validación empírica sobre el prototipo mecánico completo queda, según lo acordado en los objetivos, delegada al grupo de investigación MANTIS.
+\end{description}
+
+En conjunto, los cuatro objetivos específicos se han alcanzado dentro del alcance definido para el Trabajo, y con ellos el objetivo principal: evaluar, diseñar y validar cinemáticamente una arquitectura robótica de seguimiento solar viable para la aplicación de sinterización solar en la latitud de Toledo. El proyecto ha recorrido el ciclo completo de ingeniería (desde el modelado matemático hasta la materialización del control) partiendo de una hipótesis de partida que resultó inviable y culminando en una solución alternativa validada teóricamente.

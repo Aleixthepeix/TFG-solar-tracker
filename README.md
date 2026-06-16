@@ -199,3 +199,11 @@ El directorio [`arquitectura2/`](arquitectura2/) contiene los scripts de estudio
 - **`bucle_imagen_simulada.py`** — simulación completa en bucle cerrado: cinemática inversa numérica (método de Brent), modelo de cámara por proyección gnomónica, control proporcional con corrección de elevación y panel de visualización de actuadores. Permite validar el sistema sin hardware.
 
 Ver [`arquitectura2/README.md`](arquitectura2/README.md) para la descripción detallada de cada script.
+
+---
+
+## Memoria del TFG
+
+El directorio [`latex/`](latex/) contiene el código fuente LaTeX de la memoria del trabajo. El documento maestro es `TFG.tex`; los datos del autor y título están en `datos-tfg.tex`. El contenido está repartido en las carpetas `tex/` (capítulos), `fig/` (figuras), `bib/` (bibliografía) y `sty/` (clase y estilos de la plantilla EIIA-UCLM).
+
+Compilar con `lualatex` (probado con TeX Live 2022). En Overleaf: documento principal `TFG.tex`, compilador `lualatex`.

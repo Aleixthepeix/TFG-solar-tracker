@@ -1,0 +1,39 @@
+\chapter{Introducción} 
+\label{ch:introduccion}
+
+
+La fabricación aditiva ha transformado la manera de producir objetos. Permite construir piezas capa a capa, a partir de un modelo digital, sin los moldes ni el desperdicio de material de los métodos tradicionales. Sin embargo, la mayoría de estas tecnologías comparten una dependencia común: requieren un suministro eléctrico estable y, con frecuencia, materiales procesados de origen industrial. Esta dependencia limita su uso en entornos aislados, donde ni la energía ni los materiales especializados están garantizados.
+
+La concentración solar para tratamientos térmicos propone una alternativa radical. La idea es sencilla: concentrar la luz del sol mediante una lente hasta alcanzar temperaturas muy elevadas en un punto reducido, suficientes para transformar la superficie de un material o incluso para fundirlo. El aporte de calor no consume electricidad. Esto abre un abanico amplio de aplicaciones: desde el tratamiento superficial de materiales ---endurecimiento, recocido o modificación de propiedades superficiales--- hasta la sinterización de arena para fabricación aditiva, en la que la sílice fundida solidifica formando objetos sólidos capa a capa. Estas técnicas resultan especialmente atractivas en entornos donde los recursos son escasos. La construcción en zonas desérticas o, a más largo plazo, la fabricación en entornos extraterrestres a partir de regolito, comparten una misma característica: la energía y el transporte de materiales son costosos o inviables, mientras que la radiación solar es abundante.
+
+Se necesita, por tanto, una arquitectura robótica capaz de reorientar la lente hacia el sol preservando en todo momento la geometría de concentración: la distancia entre la lente y el punto de sinterización deben mantenerse constantes durante toda la operación. A este requisito se suman los de rigidez, precisión y un rango de movimiento suficiente para acompañar al sol durante las horas útiles de cada día del año. Determinar qué arquitectura cumple estas condiciones, y con qué grado, es el problema que aborda el presente Trabajo.
+
+\section{Contexto del proyecto}
+\label{sec:contexto}
+
+Este \gls{TFG} se enmarca en la actividad del grupo de investigación MANTIS de la Universidad de Castilla-La Mancha, que desarrolla un prototipo físico de máquina de sinterización solar. Dentro de ese marco, el presente Trabajo asume una tarea concreta y delimitada: evaluar, diseñar y validar la arquitectura robótica responsable del seguimiento solar, así como el sistema de control que la gobierna. La construcción y caracterización experimental del prototipo a escala real se desarrolla en paralelo por el propio grupo, que se apoya en los modelos y el software validados en este Trabajo.
+
+El proyecto parte de una hipótesis razonable, que una arquitectura robótica de uso extendido podría resolver el problema, y la somete a un análisis sistemático. El resultado de ese análisis, junto con la solución que de él se deriva, constituye el núcleo de esta memoria.
+
+
+\section{Organización de la memoria} 
+\label{sec:organizacion-memoria}
+
+La organización de este documento responde a un documento científico-técnico. Se descompone en los siguientes capítulos.
+
+\begin{description}
+    \item[\autoref{ch:objetivos}] Enumera y justifica los objetivos del proyecto y establece los límites intrínsecos y extrínsecos de ejecución del TFG.
+    \item[\autoref{ch:antecedentes}] Analiza los antecedentes y estado del arte en relación al tema del proyecto.
+    \item[\autoref{ch:desarrollo}] Describe todo el proceso de desarrollo del TFG.  Esto incluye la metodología de trabajo empleada y las diferentes etapas o iteraciones que se han llevado a cabo.  No dudes en descomponer el capítulo en varios si aglutina demasiado material.
+    \item[\autoref{ch:resultados}] Describe en detalle los resultados obtenidos y las pruebas realizadas. Discute los resultados en relación a los objetivos del proyecto.
+    \item[\autoref{ch:conclusiones}] Recopila las principales conclusiones del proyecto y comenta las líneas de trabajo futuro, en caso de que se contemplen.
+    \item[\deschyperlink{ch:anexos}{Anexos}] Complementan la información del cuerpo del documento con información técnica útil para reproducir los resultados, pero innecesaria para comprender en su totalidad el TFG realizado.
+    \item[\deschyperlink{ch:bibliografia}{Bibliografía}] Recopila las referencias bibliográficas utilizadas en este documento.
+\end{description}
+
+
+
+\section{Repositorio de información}
+\label{sec:repositorio}
+
+Todo el material generado durante la ejecución de este proyecto está disponible en el repositorio \thegitrepo{}.  El material incluye el código \LaTeX{} del presente documento, el código fuente de los programas realizados o modificados, y todos los datos generados en la evaluación de resultados.

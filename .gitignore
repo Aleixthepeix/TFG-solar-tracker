@@ -14,3 +14,24 @@ __pycache__/
 
 # VSCode — settings locales de cada máquina
 .vscode/
+
+# LaTeX — artefactos de compilación
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.ist
+*.lof
+*.log
+*.lot
+*.run.xml
+*.synctex.gz
+*.toc
+*.acn
+*.acr
+*.alg
+*.pygtex
+*.pygstyle
+_minted/

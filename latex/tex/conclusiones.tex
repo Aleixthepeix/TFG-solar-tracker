@@ -1,0 +1,25 @@
+\chapter{Conclusiones}
+\label{ch:conclusiones}
+
+
+Este Trabajo de Fin de Grado partía de una pregunta de viabilidad: si una arquitectura robótica era capaz de orientar una lente de Fresnel hacia el sol con la precisión y el rango angular que exige la sinterización solar de arena en la latitud de Toledo. La respuesta, construida a lo largo del proyecto, ha resultado más rica que un simple sí o no: la topología que la intuición inicial señalaba como idónea resultó inviable, y la solución finalmente validada surgió precisamente del análisis riguroso de ese fracaso.
+
+\section{Sobre el valor del resultado negativo}
+
+La conclusión más importante del proyecto no es la arquitectura final propuesta, sino el camino que condujo a ella. La plataforma Gough-Stewart reúne sobre el papel todas las virtudes deseables para esta aplicación (rigidez estructural, alta precisión no acumulativa, capacidad de carga), y por ello constituía la candidata natural. Sin embargo, su evaluación cinemática sistemática demostró que ninguna de estas virtudes compensa su limitación fundamental: un espacio de trabajo angular incompatible con las amplias trayectorias que el sol describe a lo largo del año.
+
+Este hallazgo ilustra una lección de ingeniería que trasciende el caso concreto: la idoneidad de una arquitectura mecánica no puede juzgarse por sus prestaciones aisladas, sino por su adecuación al espacio de operación real de la aplicación. La metodología de cosimulación empleada, que confrontó el modelo matemático con un gemelo digital, fue determinante para alcanzar esta conclusión antes de comprometer recursos en la fabricación de un prototipo inviable. El valor de este resultado negativo es, por tanto, doble: ahorra a trabajos futuros la repetición de una evaluación costosa y valida una metodología de descarte aplicable a otras arquitecturas y latitudes.
+
+\section{Sobre la solución desarrollada}
+
+El rediseño motivado por el descarte de la plataforma Gough-Stewart condujo a una arquitectura que invierte la lógica del problema. En lugar de adoptar un mecanismo de propósito general y comprobar si su espacio de trabajo bastaba, se sintetizaron dos mecanismos específicos, cada uno dimensionado para un eje de orientación, sacrificando deliberadamente la generalidad a cambio del rango angular necesario. El desacoplamiento cinemático entre ambos no fue un efecto colateral, sino una propiedad buscada: es lo que permite verificar analíticamente el cumplimiento de los requerimientos, unificar la resolución de la cinemática inversa y gobernar cada eje de forma independiente.
+
+Esta inversión de enfoque (de lo general dimensionado en exceso a lo específico ajustado a la necesidad) es quizá la aportación conceptual más transferible del trabajo. En un contexto de fabricación descentralizada y recursos limitados, donde la sencillez y la robustez priman sobre la versatilidad, una arquitectura a medida resulta preferible a una solución estándar sobredimensionada.
+
+En el plano del control, la materialización del sistema demostró que las restricciones del hardware embebido no obligan a renunciar al rigor del modelo. Decisiones como la resolución de la cinemática inversa por un método de convergencia garantizada y coste computacional acotado, o la separación de funciones en nodos físicos diferenciados permitieron trasladar el modelo matemático a un sistema real autónomo sin pérdida de fidelidad.
+
+El límite más relevante es que la validación alcanzada es cinemática y virtual, no empírica. Esta frontera no es una carencia, sino una delimitación deliberada del alcance: la construcción y caracterización experimental del prototipo a escala real se desarrolla en paralelo por el grupo de investigación MANTIS, y el presente Trabajo le proporciona los modelos, algoritmos y software validados teóricamente sobre los que apoyar esa fase. Quedaron igualmente fuera del alcance el análisis dinámico y estructural del mecanismo y la caracterización térmica del proceso de sinterización, por corresponder a dominios ajenos a la viabilidad cinemática que constituía el núcleo del proyecto.
+
+\section{Síntesis y trabajo futuro}
+
+En definitiva, el Trabajo cierra el ciclo que los objetivos abrieron: demuestra la inviabilidad de una hipótesis de partida plausible, propone y valida teóricamente una alternativa funcional, y deja materializado un sistema de control autónomo listo para su verificación experimental. La sinterización solar de arena dispone, gracias a este trabajo, de una arquitectura de seguimiento cinemáticamente viable sobre la que construir las siguientes etapas hacia una fabricación aditiva sostenible y descentralizada.
